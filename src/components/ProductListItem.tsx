@@ -14,7 +14,7 @@ type ProductListItemProps = { //used to define the type of he variables, we use 
 //this is aproduct component and we uses prop here to share data between componenets
 const ProductListItem = ({ product }: ProductListItemProps) => {
   return (
-    <Link href={`/${product.id}`} asChild>
+    <Link href={`/menu/${product.id}`} asChild>
       <Pressable style={styles.container}>
         <Image
           source={{ uri: product.image || defaultPizzaImage }}
