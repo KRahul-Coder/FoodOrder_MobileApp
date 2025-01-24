@@ -1,10 +1,14 @@
-import { StyleSheet, Text, View, Image } from 'react-native';
+import { StyleSheet, Text, View, Image, Pressable } from 'react-native';
 import { Stack, useLocalSearchParams } from 'expo-router';
 import products from '@assets/data/products';
 import { defaultPizzaImage } from '@/components/ProductListItem';
 import { useState } from 'react';
+import Button from '@/components/Button';
+
 
 const sizes = ['S', 'M', 'L', 'XL'];
+
+
 
 const ProductDetailScreen = () => {
 
@@ -12,6 +16,10 @@ const ProductDetailScreen = () => {
     const product = products.find((p) => p.id.toString() == id);
 
     const [selectedSize, setSelectedSize] = useState('L');
+
+    const addToCart = () => {
+        console.warn('Adding to Cart, size: ', selectedSize);
+    };
 
     if (!product) {
         return <Text>Product not Found!!</Text>
@@ -24,16 +32,28 @@ const ProductDetailScreen = () => {
             <Text>Select Size</Text>
             <View style={styles.sizes}>
                 {sizes.map((size) => (
-                    <View style={[styles.size,
-                    { backgroundColor: selectedSize == size ? 'gainsboro' : 'white' },
-                    ]} key={size}>
-                        <Text style={styles.sizeText}>{size}</Text>
-                    </View>
+                    <Pressable
+                        onPress={() => {
+                            setSelectedSize(size);
+                        }}
+                        style={[
+                            styles.size,
+                            {
+                                backgroundColor: selectedSize == size ? 'gainsboro' : 'white'
+                            },
+                        ]} key={size}>
+                        <Text style={[styles.sizeText,
+                        {
+                            color: selectedSize == size ? 'black' : 'gray'
+                        },
+                        ]}>{size}</Text>
+                    </Pressable>
                 ))}
             </View>
 
             <Stack.Screen options={{ title: product?.name }} />
             <Text style={styles.price} > ${product.price} </Text>
+            <Button onPress={addToCart} text="Add to Cart" />
         </View>
     )
 }
@@ -51,6 +71,7 @@ const styles = StyleSheet.create({
     price: {
         fontSize: 18,
         fontWeight: 'bold',
+        marginTop: 'auto',
     },
 
     sizes: {
